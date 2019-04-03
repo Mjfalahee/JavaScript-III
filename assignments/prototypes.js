@@ -16,6 +16,26 @@
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
 
+function GameObject(attributes) {
+  this.createdAt = attributes.createdAt;
+  this.name = attributes.name;
+  this.dimensions = attributes.dimensions;
+}
+
+GameObject.prototype.destroy = function(){
+  return `${this.name} was removed from the game.`;
+}
+
+const Egg = new GameObject( {
+  createdAt: "2 PM",
+  name: "Egg",
+  dimensions: "Really really small"
+});
+
+console.log(Egg);
+console.log(Egg.destroy());
+
+
 /*
   === CharacterStats ===
   * healthPoints
@@ -23,6 +43,11 @@
   * should inherit destroy() from GameObject's prototype
 */
 
+/*
+function CharacterStats(stats) {
+  this.healthPoints = stats.healthPoints;
+  
+}
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
   * team
