@@ -152,7 +152,7 @@ Humanoid.prototype.greet = function() {
     ],
     language: 'Elvish',
   });
-
+/*
   console.log(mage.createdAt); // Today's date
   console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
   console.log(swordsman.healthPoints); // 15
@@ -164,8 +164,79 @@ Humanoid.prototype.greet = function() {
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 
-
+*/
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  function Villain(evil) {
+    Humanoid.call(this,evil);
+  }
+
+  Villain.prototype = Object.create(Humanoid.prototype);
+
+  Villain.prototype.attack = function(target) {
+    let damage = 10;
+    if (target.healthPoints < 1) {
+      return `${this.name} savagely ends the life of ${target.name} with a swing of his ${this.weapons}`
+    }
+    else {
+      return `${this.name} attacks ${target.name} with his ${this.weapons} for ${damage} damage`;
+    }
+  };
+
+  function Hero(good) {
+    Humanoid.call(this,good);
+  }
+
+  Hero.prototype = Object.create(Humanoid.prototype);
+
+  
+  Hero.prototype.attack = function(target) {
+    let damage = 10;
+    if (target.healthPoints < 1) {
+      return `${this.name} savagely ends the life of ${target.name} with a swing of his ${this.weapons}`
+    }
+    else {
+      return `${this.name} attacks ${target.name} with his ${this.weapons} for ${damage} damage`;
+    }
+  };
+
+  const Bill = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 1,
+      height: 1,
+    },
+    healthPoints: 50,
+    name: 'Bill the Bashful',
+    team: 'Mage Guild',
+    weapons: [
+      'Cow Leg',
+    ],
+    language: 'Common Tongue',
+  });
+
+  
+  const Randy = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 1,
+      height: 1,
+    },
+    healthPoints: 30,
+    name: 'Randy the Render',
+    team: 'Mage Guild',
+    weapons: [
+      'Cleaver',
+    ],
+    language: 'Common Tongue',
+  });
+
+
+  console.log(Bill.attack(Randy));
+  console.log(Randy.attack(Bill));
+  console.log(Bill.attack(Randy));
