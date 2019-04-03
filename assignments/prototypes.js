@@ -57,6 +57,10 @@ CharacterStats.prototype.takeDamage = function(){
   return `${this.name} took damage.`;
 }
 
+/* 
+
+Personal Tests
+
 const Egg = new CharacterStats( {
   createdAt: "2 PM",
   name: "Egg",
@@ -67,7 +71,8 @@ const Egg = new CharacterStats( {
 console.log(Egg);
 console.log(Egg.destroy());
 console.log(Egg.takeDamage());
-/*
+
+
   === Humanoid (Having an appearance or character resembling that of a human.) ===
   * team
   * weapons
@@ -77,6 +82,19 @@ console.log(Egg.takeDamage());
   * should inherit takeDamage() from CharacterStats
 */
  
+function Humanoid(elements) {
+  CharacterStats.call(this,elements);
+  this.team = elements.team;
+  this.weapons = elements.weapons;
+  this.language = elements.language;
+}
+
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+Humanoid.prototype.greet = function() {
+  return `${this.name} offers a greeting in ${this.language}`;
+}
+
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -85,7 +103,6 @@ console.log(Egg.takeDamage());
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -146,7 +163,7 @@ console.log(Egg.takeDamage());
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
