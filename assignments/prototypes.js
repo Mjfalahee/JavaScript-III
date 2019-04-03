@@ -177,12 +177,26 @@ Humanoid.prototype.greet = function() {
   Villain.prototype = Object.create(Humanoid.prototype);
 
   Villain.prototype.attack = function(target) {
-    let damage = 10;
+    let x = 8;
+    let y = 11;
+    let damage = Math.floor(Math.random() * (+y - +x) + +x);
+    target.healthPoints = target.healthPoints - damage;
+    if (this.healthPoints < 1) {
+      console.log(`${this.name} has perished and cannot continue the fight`)
+      return target.healthPoints;
+    }
     if (target.healthPoints < 1) {
-      return `${this.name} savagely ends the life of ${target.name} with a swing of his ${this.weapons}`
+      console.log(`${this.name} has won the fight, and holds his swing`)
+      return target.healthPoints;
+    } 
+    if (target.healthPoints < 10) { 
+      console.log(`${this.name} savagely ends the life of ${target.name} with a final swing from his ${this.weapons}`)
+      return target.healthPoints;
     }
     else {
-      return `${this.name} attacks ${target.name} with his ${this.weapons} for ${damage} damage`;
+      console.log(`${this.name} attacks ${target.name} with his ${this.weapons} for ${damage} damage`);
+      console.log(`${target.name} has ${target.healthPoints} health remaining`);
+      return target.healthPoints;
     }
   };
 
@@ -194,12 +208,26 @@ Humanoid.prototype.greet = function() {
 
   
   Hero.prototype.attack = function(target) {
-    let damage = 10;
+    let x = 10;
+    let y = 15;
+    let damage = Math.floor(Math.random() * (+y - +x) + +x);
+    target.healthPoints = target.healthPoints - damage;
+    if (this.healthPoints < 1) {
+      console.log(`${this.name} has perished and cannot continue the fight`)
+      return target.healthPoints;
+    }
     if (target.healthPoints < 1) {
-      return `${this.name} savagely ends the life of ${target.name} with a swing of his ${this.weapons}`
+      console.log(`${this.name} has won the fight, and holds his swing`)
+      return target.healthPoints;
+    }
+    if (target.healthPoints < 10) {
+      console.log(`${this.name} savagely ends the life of ${target.name} with a final swing from his ${this.weapons}`)
+      return target.healthPoints;
     }
     else {
-      return `${this.name} attacks ${target.name} with his ${this.weapons} for ${damage} damage`;
+      console.log(`${this.name} attacks ${target.name} with his ${this.weapons} for ${damage} damage`);
+      console.log(`${target.name} has ${target.healthPoints} health remaining`);
+      return target.healthPoints;
     }
   };
 
@@ -210,11 +238,11 @@ Humanoid.prototype.greet = function() {
       width: 1,
       height: 1,
     },
-    healthPoints: 50,
+    healthPoints: 100,
     name: 'Bill the Bashful',
     team: 'Mage Guild',
     weapons: [
-      'Cow Leg',
+      'Severed Cow Leg',
     ],
     language: 'Common Tongue',
   });
@@ -227,7 +255,7 @@ Humanoid.prototype.greet = function() {
       width: 1,
       height: 1,
     },
-    healthPoints: 30,
+    healthPoints: 80,
     name: 'Randy the Render',
     team: 'Mage Guild',
     weapons: [
@@ -237,6 +265,19 @@ Humanoid.prototype.greet = function() {
   });
 
 
-  console.log(Bill.attack(Randy));
-  console.log(Randy.attack(Bill));
-  console.log(Bill.attack(Randy));
+  Bill.attack(Randy);
+  Randy.attack(Bill);
+  Bill.attack(Randy);
+  Randy.attack(Bill);
+  Bill.attack(Randy);
+  Randy.attack(Bill);
+  Bill.attack(Randy);
+  Randy.attack(Bill);
+  Bill.attack(Randy);
+  Randy.attack(Bill);
+  Bill.attack(Randy);
+  Randy.attack(Bill);
+  Bill.attack(Randy);
+  Randy.attack(Bill);
+  Bill.attack(Randy);
+  Randy.attack(Bill);
