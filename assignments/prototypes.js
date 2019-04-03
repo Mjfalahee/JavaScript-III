@@ -26,6 +26,10 @@ GameObject.prototype.destroy = function(){
   return `${this.name} was removed from the game.`;
 }
 
+/* 
+
+Personal tests
+
 const Egg = new GameObject( {
   createdAt: "2 PM",
   name: "Egg",
@@ -35,19 +39,34 @@ const Egg = new GameObject( {
 console.log(Egg);
 console.log(Egg.destroy());
 
-
-/*
   === CharacterStats ===
   * healthPoints
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
 
-/*
+
 function CharacterStats(stats) {
+  GameObject.call(this, stats);
   this.healthPoints = stats.healthPoints;
-  
 }
+
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
+CharacterStats.prototype.takeDamage = function(){
+  return `${this.name} took damage.`;
+}
+
+const Egg = new CharacterStats( {
+  createdAt: "2 PM",
+  name: "Egg",
+  dimensions: "Really really small",
+  healthPoints: 50
+});
+
+console.log(Egg);
+console.log(Egg.destroy());
+console.log(Egg.takeDamage());
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
   * team
