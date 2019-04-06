@@ -16,14 +16,63 @@
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
 
-/*
+function GameObject(attributes) {
+  this.createdAt = attributes.createdAt;
+  this.name = attributes.name;
+  this.dimensions = attributes.dimensions;
+}
+
+GameObject.prototype.destroy = function(){
+  return `${this.name} was removed from the game.`;
+}
+
+/* 
+
+Personal tests
+
+const Egg = new GameObject( {
+  createdAt: "2 PM",
+  name: "Egg",
+  dimensions: "Really really small"
+});
+
+console.log(Egg);
+console.log(Egg.destroy());
+
   === CharacterStats ===
   * healthPoints
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
 
-/*
+
+function CharacterStats(stats) {
+  GameObject.call(this, stats);
+  this.healthPoints = stats.healthPoints;
+}
+
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
+CharacterStats.prototype.takeDamage = function(){
+  return `${this.name} took damage.`;
+}
+
+/* 
+
+Personal Tests
+
+const Egg = new CharacterStats( {
+  createdAt: "2 PM",
+  name: "Egg",
+  dimensions: "Really really small",
+  healthPoints: 50
+});
+
+console.log(Egg);
+console.log(Egg.destroy());
+console.log(Egg.takeDamage());
+
+
   === Humanoid (Having an appearance or character resembling that of a human.) ===
   * team
   * weapons
@@ -33,6 +82,19 @@
   * should inherit takeDamage() from CharacterStats
 */
  
+function Humanoid(elements) {
+  CharacterStats.call(this,elements);
+  this.team = elements.team;
+  this.weapons = elements.weapons;
+  this.language = elements.language;
+}
+
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+Humanoid.prototype.greet = function() {
+  return `${this.name} offers a greeting in ${this.language}`;
+}
+
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -41,7 +103,6 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -91,7 +152,7 @@
     ],
     language: 'Elvish',
   });
-
+/*
   console.log(mage.createdAt); // Today's date
   console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
   console.log(swordsman.healthPoints); // 15
@@ -102,9 +163,121 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
 
+*/
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  function Villain(evil) {
+    Humanoid.call(this,evil);
+  }
+
+  Villain.prototype = Object.create(Humanoid.prototype);
+
+  Villain.prototype.attack = function(target) {
+    let x = 8;
+    let y = 11;
+    let damage = Math.floor(Math.random() * (+y - +x) + +x);
+    target.healthPoints = target.healthPoints - damage;
+    if (this.healthPoints < 1) {
+      console.log(`${this.name} has perished and cannot continue the fight`)
+      return target.healthPoints;
+    }
+    if (target.healthPoints < 1) {
+      console.log(`${this.name} has won the fight, and holds his swing`)
+      return target.healthPoints;
+    } 
+    if (target.healthPoints < 10) { 
+      console.log(`${this.name} savagely ends the life of ${target.name} with a final swing from his ${this.weapons}`)
+      return target.healthPoints;
+    }
+    else {
+      console.log(`${this.name} attacks ${target.name} with his ${this.weapons} for ${damage} damage`);
+      console.log(`${target.name} has ${target.healthPoints} health remaining`);
+      return target.healthPoints;
+    }
+  };
+
+  function Hero(good) {
+    Humanoid.call(this,good);
+  }
+
+  Hero.prototype = Object.create(Humanoid.prototype);
+
+  
+  Hero.prototype.attack = function(target) {
+    let x = 10;
+    let y = 15;
+    let damage = Math.floor(Math.random() * (+y - +x) + +x);
+    target.healthPoints = target.healthPoints - damage;
+    if (this.healthPoints < 1) {
+      console.log(`${this.name} has perished and cannot continue the fight`)
+      return target.healthPoints;
+    }
+    if (target.healthPoints < 1) {
+      console.log(`${this.name} has won the fight, and holds his swing`)
+      return target.healthPoints;
+    }
+    if (target.healthPoints < 10) {
+      console.log(`${this.name} savagely ends the life of ${target.name} with a final swing from his ${this.weapons}`)
+      return target.healthPoints;
+    }
+    else {
+      console.log(`${this.name} attacks ${target.name} with his ${this.weapons} for ${damage} damage`);
+      console.log(`${target.name} has ${target.healthPoints} health remaining`);
+      return target.healthPoints;
+    }
+  };
+
+  const Bill = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 1,
+      height: 1,
+    },
+    healthPoints: 100,
+    name: 'Bill the Bashful',
+    team: 'Mage Guild',
+    weapons: [
+      'Severed Cow Leg',
+    ],
+    language: 'Common Tongue',
+  });
+
+  
+  const Randy = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 1,
+      height: 1,
+    },
+    healthPoints: 80,
+    name: 'Randy the Render',
+    team: 'Mage Guild',
+    weapons: [
+      'Cleaver',
+    ],
+    language: 'Common Tongue',
+  });
+
+
+  Bill.attack(Randy);
+  Randy.attack(Bill);
+  Bill.attack(Randy);
+  Randy.attack(Bill);
+  Bill.attack(Randy);
+  Randy.attack(Bill);
+  Bill.attack(Randy);
+  Randy.attack(Bill);
+  Bill.attack(Randy);
+  Randy.attack(Bill);
+  Bill.attack(Randy);
+  Randy.attack(Bill);
+  Bill.attack(Randy);
+  Randy.attack(Bill);
+  Bill.attack(Randy);
+  Randy.attack(Bill);
